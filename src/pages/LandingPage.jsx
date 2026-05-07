@@ -13,18 +13,18 @@ export default function LandingPage() {
         
         <div className="inline-flex items-center rounded-full border border-indigo-100 bg-indigo-50/50 px-3 py-1 text-sm text-indigo-600 mb-8 backdrop-blur-sm">
           <span className="flex h-2 w-2 rounded-full bg-indigo-600 mr-2"></span>
-          AI-Powered Spend Optimization
+          AI Spend Optimization Platform
         </div>
         
         <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight text-slate-900 max-w-4xl mb-6">
           Stop overpaying for <br className="hidden md:block" />
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600">
-            SaaS tools you don't use.
+            AI tools your team doesn't use.
           </span>
         </h1>
         
         <p className="text-lg md:text-xl text-slate-600 max-w-2xl mb-10 leading-relaxed">
-          Instantly audit your company's SaaS stack. Our AI analyzes your billing, identifies unused licenses, and finds cheaper alternatives to save you thousands annually.
+          Instantly audit your company's AI stack (ChatGPT, Claude, Cursor, Copilot). Identify idle licenses, consolidate overlapping tools, and save thousands annually.
         </p>
         
         <div className="flex flex-col sm:flex-row gap-4 w-full max-w-md">
@@ -55,24 +55,24 @@ export default function LandingPage() {
               <div className="h-12 w-12 bg-blue-100 rounded-xl flex items-center justify-center mb-6 text-blue-600">
                 <Zap className="h-6 w-6" />
               </div>
-              <h3 className="text-xl font-semibold mb-2 text-slate-900">Instant Discovery</h3>
-              <p className="text-slate-600">Automatically map every SaaS subscription across your entire organization in minutes.</p>
+              <h3 className="text-xl font-semibold mb-2 text-slate-900">Instant AI Mapping</h3>
+              <p className="text-slate-600">Automatically map every AI subscription across your entire organization in minutes.</p>
             </div>
             
             <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center text-center">
               <div className="h-12 w-12 bg-emerald-100 rounded-xl flex items-center justify-center mb-6 text-emerald-600">
                 <TrendingDown className="h-6 w-6" />
               </div>
-              <h3 className="text-xl font-semibold mb-2 text-slate-900">Smart Optimization</h3>
-              <p className="text-slate-600">Identify overlapping tools, idle licenses, and cheaper pricing tiers instantly.</p>
+              <h3 className="text-xl font-semibold mb-2 text-slate-900">License Optimization</h3>
+              <p className="text-slate-600">Identify overlapping capabilities (e.g. ChatGPT vs Claude), idle seats, and team tier upgrades.</p>
             </div>
             
             <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center text-center">
               <div className="h-12 w-12 bg-purple-100 rounded-xl flex items-center justify-center mb-6 text-purple-600">
                 <Shield className="h-6 w-6" />
               </div>
-              <h3 className="text-xl font-semibold mb-2 text-slate-900">Secure & Compliant</h3>
-              <p className="text-slate-600">Read-only access ensures your data is safe while we analyze your spend.</p>
+              <h3 className="text-xl font-semibold mb-2 text-slate-900">Actionable Reports</h3>
+              <p className="text-slate-600">Get a personalized AI-generated summary with exact next steps to cut your API and SaaS bill.</p>
             </div>
           </div>
         </div>
@@ -96,16 +96,16 @@ export default function LandingPage() {
             <CardContent className="p-8 space-y-6">
               <div className="space-y-2">
                 <label className="text-sm font-medium text-slate-700">Tool Name</label>
-                <Input placeholder="e.g. Notion, Slack, Linear" />
+                <Input placeholder="e.g. ChatGPT Plus, Claude Pro, Cursor" />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-slate-700">Current Plan</label>
-                  <Input placeholder="e.g. Enterprise" />
+                  <Input placeholder="e.g. Team Tier" />
                 </div>
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-slate-700">Monthly Spend ($)</label>
-                  <Input type="number" placeholder="500" />
+                  <Input type="number" placeholder="600" />
                 </div>
               </div>
               <Button className="w-full mt-4" size="lg">Run AI Audit</Button>
@@ -117,10 +117,10 @@ export default function LandingPage() {
       {/* CTA Section */}
       <section className="w-full py-20 bg-indigo-900 text-white text-center px-4">
         <div className="max-w-3xl mx-auto space-y-8">
-          <h2 className="text-3xl md:text-5xl font-bold tracking-tight">Ready to cut your SaaS bill by 30%?</h2>
-          <p className="text-indigo-200 text-lg md:text-xl">Join hundreds of startups optimizing their runway with SpendPilot.</p>
+          <h2 className="text-3xl md:text-5xl font-bold tracking-tight">Ready to optimize your AI stack?</h2>
+          <p className="text-indigo-200 text-lg md:text-xl">Join hundreds of startups using SpendPilot to scale AI usage efficiently.</p>
           <Button className="bg-white text-indigo-900 hover:bg-slate-100 rounded-full px-8 h-14 text-lg font-medium mt-4 shadow-lg shadow-indigo-900/20">
-            Get Started for Free
+            Start Free AI Audit
           </Button>
         </div>
       </section>

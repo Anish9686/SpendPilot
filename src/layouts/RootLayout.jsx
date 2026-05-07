@@ -16,15 +16,14 @@ export default function RootLayout() {
           </Link>
 
           <nav className="hidden md:flex items-center space-x-8 text-sm font-medium text-slate-600">
-            <a href="#features" className="hover:text-slate-900 transition-colors">Features</a>
-            <a href="#how-it-works" className="hover:text-slate-900 transition-colors">How it Works</a>
-            <a href="#pricing" className="hover:text-slate-900 transition-colors">Pricing</a>
+            <a href="#features" className="hover:text-slate-900 transition-colors">How it Works</a>
+            <a href="#demo" className="hover:text-slate-900 transition-colors">Live Audit</a>
           </nav>
 
           <div className="flex items-center space-x-4">
             <Button variant="ghost" className="hidden md:flex">Sign In</Button>
             <Button className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-full px-6">
-              Start Free Audit
+              Start Free AI Audit
             </Button>
           </div>
         </div>

@@ -1,16 +1,89 @@
-# React + Vite
+# SpendPilot
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+SpendPilot is an AI Spend Audit platform that helps startups and teams identify unnecessary spending across AI tools like ChatGPT, Claude, Cursor, GitHub Copilot, and more.
 
-Currently, two official plugins are available:
+Users can audit their AI stack, receive optimization recommendations, estimate monthly and annual savings, and generate shareable audit reports.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- AI tool spending audit
+- Monthly + annual savings estimation
+- Personalized AI-generated summaries
+- Shareable public audit reports
+- Lead capture for high-savings opportunities
+- Responsive startup-style UI
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Tech Stack
+
+Frontend:
+- React + Vite
+- JavaScript
+- Tailwind CSS
+- shadcn/ui
+- React Router
+
+Backend (planned):
+- Supabase
+
+Deployment:
+- Vercel
+
+AI:
+- OpenAI API / Anthropic API
+
+---
+
+## Current Progress
+
+### Completed
+- Project setup
+- Tailwind configuration
+- shadcn/ui setup
+- Responsive landing page
+- Placeholder audit form
+- Basic folder architecture
+
+### In Progress
+- Dynamic audit engine
+- Savings recommendation logic
+- AI summary generation
+- Supabase integration
+
+---
+
+## Project Structure
+
+```bash
+src/
+ ├── components/
+ ├── layouts/
+ ├── lib/
+ ├── pages/
+ └── assets/
+```
+
+---
+
+## Design Goals
+
+- Clean SaaS-style UI
+- Startup-focused product experience
+- Minimal and modern interface
+- Mobile responsive
+- Fast-loading MVP architecture
+
+---
+
+## Deployment
+
+Deployment will be done using Vercel.
+
+---
+
+## Status
+
+Day 1 completed — project foundation and landing page setup finished.
