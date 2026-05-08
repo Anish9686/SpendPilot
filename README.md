@@ -44,8 +44,11 @@ AI:
 - Tailwind configuration
 - shadcn/ui setup
 - Responsive landing page
-- Placeholder audit form
 - Basic folder architecture
+- Dynamic AI Audit Form (React Hook Form + Zod)
+- LocalStorage state persistence
+- Form array logic for multiple AI tools
+- React Router integration for `/audit` page
 
 ### In Progress
 - Dynamic audit engine
@@ -86,4 +89,4 @@ Deployment will be done using Vercel.
 
 ## Status
 
-Day 1 completed — project foundation and landing page setup finished.
+Day 2 completed — dynamic AI audit form, validation, and local storage persistence implemented.
