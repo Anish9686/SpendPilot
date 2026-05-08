@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import RootLayout from "./layouts/RootLayout";
 import LandingPage from "./pages/LandingPage";
+import AuditPage from "./pages/AuditPage";
 
 function App() {
   return (
@@ -8,7 +9,7 @@ function App() {
       <Routes>
         <Route path="/" element={<RootLayout />}>
           <Route index element={<LandingPage />} />
-          {/* We'll add /audit, /report etc. here later */}
+          <Route path="audit" element={<AuditPage />} />
         </Route>
       </Routes>
     </Router>

@@ -1,5 +1,5 @@
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { ArrowRight, CheckCircle2, Zap, TrendingDown, Shield } from "lucide-react";
 
@@ -32,8 +32,8 @@ export default function LandingPage() {
             placeholder="Enter your work email" 
             className="h-12 rounded-full border-slate-300 focus-visible:ring-indigo-600"
           />
-          <Button className="h-12 rounded-full bg-indigo-600 hover:bg-indigo-700 text-white px-8 w-full sm:w-auto shrink-0">
-            Start Audit <ArrowRight className="ml-2 h-4 w-4" />
+          <Button asChild className="h-12 rounded-full bg-indigo-600 hover:bg-indigo-700 text-white px-8 w-full sm:w-auto shrink-0">
+            <Link to="/audit">Start Audit <ArrowRight className="ml-2 h-4 w-4" /></Link>
           </Button>
         </div>
         
@@ -78,39 +78,14 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Placeholder Audit Form Section */}
+      {/* Demo Section */}
       <section id="demo" className="w-full py-24 bg-white relative">
-        <div className="container mx-auto px-4 max-w-3xl">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-slate-900 mb-4">Try the Audit Engine</h2>
-            <p className="text-slate-600">See how much you could save on your stack today.</p>
-          </div>
-          
-          <Card className="shadow-xl border-slate-200">
-            <CardHeader className="bg-slate-50 border-b border-slate-100 rounded-t-xl pb-6">
-              <CardTitle>AI Spend Audit Form (Placeholder)</CardTitle>
-              <CardDescription>
-                We will build the actual dynamic form and AI logic here on Day 2.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="p-8 space-y-6">
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-slate-700">Tool Name</label>
-                <Input placeholder="e.g. ChatGPT Plus, Claude Pro, Cursor" />
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-slate-700">Current Plan</label>
-                  <Input placeholder="e.g. Team Tier" />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-slate-700">Monthly Spend ($)</label>
-                  <Input type="number" placeholder="600" />
-                </div>
-              </div>
-              <Button className="w-full mt-4" size="lg">Run AI Audit</Button>
-            </CardContent>
-          </Card>
+        <div className="container mx-auto px-4 max-w-3xl text-center">
+          <h2 className="text-3xl font-bold text-slate-900 mb-4">Try the Audit Engine</h2>
+          <p className="text-slate-600 mb-8">See how much you could save on your stack today.</p>
+          <Button asChild size="lg" className="h-14 px-8 text-lg rounded-full">
+            <Link to="/audit">Go to Audit Form <ArrowRight className="ml-2 h-5 w-5" /></Link>
+          </Button>
         </div>
       </section>
 
@@ -119,8 +94,8 @@ export default function LandingPage() {
         <div className="max-w-3xl mx-auto space-y-8">
           <h2 className="text-3xl md:text-5xl font-bold tracking-tight">Ready to optimize your AI stack?</h2>
           <p className="text-indigo-200 text-lg md:text-xl">Join hundreds of startups using SpendPilot to scale AI usage efficiently.</p>
-          <Button className="bg-white text-indigo-900 hover:bg-slate-100 rounded-full px-8 h-14 text-lg font-medium mt-4 shadow-lg shadow-indigo-900/20">
-            Start Free AI Audit
+          <Button asChild className="bg-white text-indigo-900 hover:bg-slate-100 rounded-full px-8 h-14 text-lg font-medium mt-4 shadow-lg shadow-indigo-900/20">
+            <Link to="/audit">Start Free AI Audit</Link>
           </Button>
         </div>
       </section>
