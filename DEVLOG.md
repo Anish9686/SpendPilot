@@ -57,3 +57,45 @@
 - Create pricing data structures for supported AI tools.
 - Implement monthly and annual savings calculations.
 - Build the audit results page for displaying recommendations and savings insights.
+
+## Day 3 — 2026-05-09
+
+**Hours worked:** 4
+
+**What I did:**
+- Created `src/lib/pricing.js` to centralize pricing estimates for supported AI tools like ChatGPT, Claude, Cursor, and GitHub Copilot.
+- Built a lightweight audit recommendation engine inside `src/lib/auditEngine.js` using pure JavaScript business logic.
+- Implemented savings calculations for:
+  - monthly spend
+  - projected annual savings
+  - potential overpayment detection
+- Added recommendation generation for:
+  - oversized plans
+  - unnecessary spending
+  - redundant AI tooling
+  - inefficient seat allocation
+- Created `AuditReportPage.jsx` to display audit insights in a startup-style SaaS dashboard layout.
+- Added summary cards for:
+  - total monthly spend
+  - estimated monthly savings
+  - projected annual savings
+- Built recommendation cards with actionable optimization suggestions and realistic financial messaging.
+- Added a simulated “Analyzing...” loading state before navigating users from the audit form to the report page.
+- Improved CTA routing so primary actions navigate correctly to the audit experience.
+- Added a more believable recommendation structure to avoid exaggerated “AI savings” claims.
+
+**What I learned:**
+- Structuring pricing and recommendation logic separately makes frontend business logic much easier to maintain.
+- Realistic SaaS products rely more on trustworthy UX and believable recommendations than flashy AI terminology.
+- Simple deterministic recommendation systems can still feel valuable when paired with strong UI and clean presentation.
+- Small UX improvements like loading states and cleaner recommendation wording significantly improve product perception.
+
+**Blockers / what I'm stuck on:**
+- Thinking about the cleanest way to support report sharing/exporting later without introducing backend complexity too early.
+- Deciding how far to push the recommendation engine while still keeping the MVP simple and believable.
+
+**Plan for tomorrow:**
+- Add report sharing/export preparation.
+- Improve report persistence and state handling.
+- Refine recommendation edge cases and “already optimized” scenarios.
+- Perform UI polish and responsiveness testing across pages.

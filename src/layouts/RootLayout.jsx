@@ -21,9 +21,11 @@ export default function RootLayout() {
           </nav>
 
           <div className="flex items-center space-x-4">
-            <Button variant="ghost" className="hidden md:flex">Sign In</Button>
-            <Button className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-full px-6">
-              Start Free AI Audit
+            <Button variant="ghost" className="hidden md:flex" onClick={() => alert("Sign In functionality coming soon!")}>
+              Sign In
+            </Button>
+            <Button asChild className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-full px-6">
+              <Link to="/audit">Start Free AI Audit</Link>
             </Button>
           </div>
         </div>

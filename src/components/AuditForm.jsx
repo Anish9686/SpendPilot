@@ -1,7 +1,8 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Plus, Trash2, ArrowRight } from "lucide-react";
+import { Plus, Trash2, ArrowRight, Loader2 } from "lucide-react";
 
 import { auditSchema, defaultFormValues, defaultToolValues, AI_TOOLS, USE_CASES } from "@/lib/schema";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -17,6 +18,9 @@ import {
 } from "@/components/ui/select";
 
 export default function AuditForm() {
+  const navigate = useNavigate();
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+
   // Load from localStorage if available
   const savedData = localStorage.getItem("spendpilot_audit_form");
   const initialValues = savedData ? JSON.parse(savedData) : defaultFormValues;
@@ -44,9 +48,11 @@ export default function AuditForm() {
   }, [formValues]);
 
   const onSubmit = (data) => {
-    console.log("Form submitted:", data);
-    // Future: Route to report page or calculate savings
-    alert("Audit saved! Check console for data.");
+    setIsAnalyzing(true);
+    // Form values are already synced to localStorage by the watcher.
+    setTimeout(() => {
+      navigate("/report");
+    }, 1500);
   };
 
   return (
@@ -204,8 +210,17 @@ export default function AuditForm() {
           </div>
 
           <div className="pt-6 border-t border-neutral-100 dark:border-neutral-800">
-            <Button type="submit" size="lg" className="w-full md:w-auto font-medium">
-              Analyze My Spend <ArrowRight className="w-4 h-4 ml-2" />
+            <Button type="submit" size="lg" className="w-full md:w-auto font-medium" disabled={isAnalyzing}>
+              {isAnalyzing ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Analyzing Stack...
+                </>
+              ) : (
+                <>
+                  Analyze My Spend <ArrowRight className="w-4 h-4 ml-2" />
+                </>
+              )}
             </Button>
           </div>
         </form>
