@@ -99,3 +99,35 @@
 - Improve report persistence and state handling.
 - Refine recommendation edge cases and “already optimized” scenarios.
 - Perform UI polish and responsiveness testing across pages.
+
+## Day 4 — 2026-05-10
+
+**Hours worked:** 3
+
+**What I did:**
+- Implemented report persistence using `localStorage` so audit reports remain accessible after page refreshes.
+- Added frontend-only shareable audit report URLs using lightweight local report IDs.
+- Improved routing flow to support revisiting saved reports through dynamic `/report/:id` routes.
+- Built a clean empty-state experience for users who access report pages without valid audit data.
+- Added a “Share Report” CTA to improve the SaaS product feel and simulate collaborative workflows.
+- Introduced a “Health Score” card to provide a quick visual evaluation of overall AI spend efficiency.
+- Improved recommendation realism by adding “already optimized” states instead of always forcing savings recommendations.
+- Refined recommendation wording to sound more trustworthy and financially believable.
+- Added trust-building product messaging such as pricing estimate timestamps and verification indicators.
+- Continued polishing spacing, hierarchy, and overall SaaS-style UI consistency across the report experience.
+
+**What I learned:**
+- Product trust and recommendation realism are often more important than adding large amounts of functionality.
+- Small UX improvements (verification badges, timestamps, health indicators) dramatically improve perceived product quality.
+- LocalStorage combined with route parameters can simulate lightweight SaaS workflows without backend complexity.
+- Building deterministic recommendation systems creates a more believable financial product than relying on vague “AI” claims.
+
+**Blockers / what I'm stuck on:**
+- Thinking about the cleanest way to support exporting or sharing reports externally later without introducing backend systems too early.
+- Deciding how much additional polish is worth adding before reaching diminishing returns on MVP complexity.
+
+**Plan for tomorrow:**
+- Improve responsiveness and mobile polish across all pages.
+- Refine edge cases and audit recommendation handling.
+- Improve README presentation with screenshots and project details.
+- Begin preparing the project for deployment and final submission polish.

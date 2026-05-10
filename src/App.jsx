@@ -12,6 +12,7 @@ function App() {
           <Route index element={<LandingPage />} />
           <Route path="audit" element={<AuditPage />} />
           <Route path="report" element={<AuditReportPage />} />
+          <Route path="report/:reportId" element={<AuditReportPage />} />
         </Route>
       </Routes>
     </Router>

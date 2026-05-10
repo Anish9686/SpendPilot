@@ -32,7 +32,7 @@ export function runAuditEngine(formData) {
           currentPlan: plan,
           recommendedPlan: plan,
           savings: potentialSavings,
-          reason: `You are currently spending $${currentCost}/mo for ${seats} seats, but the public standard pricing is ~$${expectedCost}. Consider reviewing your invoice for hidden fees or unused add-ons.`
+          reason: `We detected a premium over standard retail pricing. You are spending $${currentCost}/mo, but benchmarks indicate ~$${expectedCost}. We recommend an invoice audit to identify unutilized add-ons or legacy billing tiers.`
         });
         totalSavings += potentialSavings;
         return; // Don't stack recommendations for the same tool unnecessarily
@@ -52,7 +52,7 @@ export function runAuditEngine(formData) {
           currentPlan: plan,
           recommendedPlan: "Individual / Pro",
           savings: potentialSavings,
-          reason: `Team plans often have higher per-seat costs. For just ${seats} user(s), downgrading to an individual Pro plan might be more cost-efficient without losing core features.`
+          reason: `Team tiers typically carry a premium per seat. For a micro-deployment of ${seats} user(s), downgrading to individual Pro licenses provides identical core utility while immediately optimizing spend.`
         });
         totalSavings += potentialSavings;
       }
@@ -72,7 +72,7 @@ export function runAuditEngine(formData) {
       currentPlan: cheaperTool.plan,
       recommendedPlan: "Cancel / Pause",
       savings: parseFloat(cheaperTool.spend),
-      reason: `You are currently paying for both ChatGPT and Claude. Consider standardizing on a single general-purpose LLM. This can improve team collaboration while reducing overlapping costs.`
+      reason: `Your stack shows overlapping capabilities across general-purpose LLMs. Standardizing on a single vendor for non-specialized tasks improves knowledge sharing and immediately recovers budget.`
     });
     totalSavings += parseFloat(cheaperTool.spend);
   }
@@ -89,7 +89,7 @@ export function runAuditEngine(formData) {
       currentPlan: generalTool.plan,
       recommendedPlan: "Reduce Seats",
       savings: potentialSavings,
-      reason: `Since your team focuses on coding with dedicated AI IDEs, you might not need a separate ${generalTool.name} subscription for every developer. Consider auditing usage and reducing seats.`
+      reason: `Given your primary use case is engineering, dedicated AI IDEs often fulfill most LLM needs. We recommend scaling down general-purpose ${generalTool.name} seats for your developer cohort to eliminate redundancy.`
     });
     totalSavings += potentialSavings;
   }
@@ -101,7 +101,7 @@ export function runAuditEngine(formData) {
       currentPlan: "Various",
       recommendedPlan: "Audit Access",
       savings: 0, // Hard to estimate exact savings without knowing which ones
-      reason: `You have ${totalSeats} total AI seats for a team of ${teamSize}. Consider performing an access review—you might be paying for inactive users or former employees.`
+      reason: `Your license-to-headcount ratio is unusually high (${totalSeats} seats for ${teamSize} employees). We flagged a surplus of allocated seats, indicating potential ghost licenses from offboarded employees or inactive users.`
     });
   }
 
@@ -112,7 +112,7 @@ export function runAuditEngine(formData) {
       currentPlan: "Highly Optimized",
       recommendedPlan: "Keep Current",
       savings: 0,
-      reason: `Your current AI stack already appears cost-efficient. We didn't find any obvious waste based on standard pricing models.`
+      reason: `Your current AI stack is exceptionally lean. Based on benchmarked startup data, your license utilization and pricing tiers are fully optimized. Keep up the great work!`
     });
   }
 

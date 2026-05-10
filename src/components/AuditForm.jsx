@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Plus, Trash2, ArrowRight, Loader2 } from "lucide-react";
+import { runAuditEngine } from "@/lib/auditEngine";
 
 import { auditSchema, defaultFormValues, defaultToolValues, AI_TOOLS, USE_CASES } from "@/lib/schema";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -49,9 +50,26 @@ export default function AuditForm() {
 
   const onSubmit = (data) => {
     setIsAnalyzing(true);
-    // Form values are already synced to localStorage by the watcher.
+    
+    // Generate report
+    const reportId = Math.random().toString(36).substring(2, 10);
+    const reportData = runAuditEngine(data);
+    
+    // Add metadata for trust building
+    reportData.generatedAt = new Date().toISOString();
+    reportData.id = reportId;
+
+    // Save to localStorage
+    const savedReportsStr = localStorage.getItem("spendpilot_reports");
+    const savedReports = savedReportsStr ? JSON.parse(savedReportsStr) : {};
+    savedReports[reportId] = reportData;
+    localStorage.setItem("spendpilot_reports", JSON.stringify(savedReports));
+    
+    // Also save latest report ID to easily find it without a specific link
+    localStorage.setItem("spendpilot_latest_report", reportId);
+
     setTimeout(() => {
-      navigate("/report");
+      navigate(`/report/${reportId}`);
     }, 1500);
   };
 
