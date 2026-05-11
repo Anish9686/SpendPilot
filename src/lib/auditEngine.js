@@ -16,15 +16,19 @@ export function runAuditEngine(formData) {
 
   tools.forEach((tool) => {
     const { name, plan, spend, seats } = tool;
-    const currentCost = parseFloat(spend) || 0;
+    
+    // Sanitize inputs
+    const currentCost = Math.max(0, parseFloat(spend) || 0);
+    const seatCount = Math.max(1, parseInt(seats, 10) || 1);
+    
     totalSpend += currentCost;
-    totalSeats += parseInt(seats, 10) || 0;
+    totalSeats += seatCount;
 
     const standardPricePerSeat = getStandardPrice(name, plan);
 
     // Rule 1: General Overpaying (paying more than standard cost)
     if (standardPricePerSeat) {
-      const expectedCost = standardPricePerSeat * seats;
+      const expectedCost = standardPricePerSeat * seatCount;
       if (currentCost > expectedCost * 1.1) { // 10% tolerance for taxes/fees
         const potentialSavings = Math.min(currentCost - expectedCost, currentCost);
         recommendations.push({
@@ -41,10 +45,10 @@ export function runAuditEngine(formData) {
 
     // Rule 2: Unnecessary Team Plans for Small Teams
     const isTeamPlan = plan.toLowerCase().includes("team") || plan.toLowerCase().includes("business") || plan.toLowerCase().includes("enterprise");
-    if (isTeamPlan && seats <= 2) {
+    if (isTeamPlan && seatCount <= 2) {
       // For instance, ChatGPT Team is 25, Plus is 20. 
       const individualPrice = getStandardPrice(name, "Plus") || getStandardPrice(name, "Pro") || getStandardPrice(name, "Individual") || 20;
-      const expectedCost = individualPrice * seats;
+      const expectedCost = individualPrice * seatCount;
       if (currentCost > expectedCost) {
         const potentialSavings = Math.min(currentCost - expectedCost, currentCost);
         recommendations.push({
@@ -52,7 +56,7 @@ export function runAuditEngine(formData) {
           currentPlan: plan,
           recommendedPlan: "Individual / Pro",
           savings: potentialSavings,
-          reason: `Team tiers typically carry a premium per seat. For a micro-deployment of ${seats} user(s), downgrading to individual Pro licenses provides identical core utility while immediately optimizing spend.`
+          reason: `Team tiers typically carry a premium per seat. For a micro-deployment of ${seatCount} user(s), downgrading to individual Pro licenses provides identical core utility while immediately optimizing spend.`
         });
         totalSavings += potentialSavings;
       }
@@ -112,7 +116,7 @@ export function runAuditEngine(formData) {
       currentPlan: "Highly Optimized",
       recommendedPlan: "Keep Current",
       savings: 0,
-      reason: `Your current AI stack is exceptionally lean. Based on benchmarked startup data, your license utilization and pricing tiers are fully optimized. Keep up the great work!`
+      reason: `Excellent work! Your current AI stack is exceptionally lean. Based on our benchmarked startup data, your license utilization and pricing tiers are fully optimized. No immediate actions are required to reduce spend.`
     });
   }
 

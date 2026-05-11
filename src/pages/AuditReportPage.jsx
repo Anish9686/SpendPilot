@@ -23,10 +23,16 @@ export default function AuditReportPage() {
         
         if (activeReportId && savedReports[activeReportId]) {
           setReport(savedReports[activeReportId]);
+        } else {
+          // Explicitly set to null if no valid report found
+          setReport(null);
         }
       } catch (err) {
         console.error("Failed to parse audit data", err);
+        setReport(null);
       }
+    } else {
+      setReport(null);
     }
   }, [reportId]);
 
@@ -62,38 +68,49 @@ export default function AuditReportPage() {
   if (!report) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[70vh] px-4 text-center">
-        <div className="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mb-6">
-          <FileX className="w-10 h-10 text-slate-400" />
+        <div className="w-24 h-24 bg-slate-100 rounded-full flex items-center justify-center mb-8 animate-pulse">
+          <FileX className="w-12 h-12 text-slate-400" />
         </div>
-        <h2 className="text-3xl font-extrabold tracking-tight text-slate-900 mb-4">Report Not Found</h2>
-        <p className="text-lg text-slate-600 mb-8 max-w-md mx-auto">
-          We couldn't find an audit report with this ID. It may have expired or hasn't been generated yet.
+        <h2 className="text-3xl font-extrabold tracking-tight text-slate-900 mb-4">Audit Report Not Found</h2>
+        <p className="text-lg text-slate-600 mb-10 max-w-md mx-auto leading-relaxed">
+          The audit link you followed may have expired, or the data was cleared from your browser's local storage.
         </p>
-        <Button asChild size="lg" className="rounded-full px-8">
-          <Link to="/audit">Start New Audit</Link>
-        </Button>
+        <div className="flex flex-col sm:flex-row gap-4">
+          <Button asChild size="lg" className="rounded-full px-8 bg-indigo-600 hover:bg-indigo-700 shadow-lg shadow-indigo-200">
+            <Link to="/audit">Run New Audit</Link>
+          </Button>
+          <Button asChild variant="outline" size="lg" className="rounded-full px-8">
+            <Link to="/">Back to Home</Link>
+          </Button>
+        </div>
       </div>
     );
   }
 
   const hasSavings = report.totalSavings > 0;
+  
+  // Dynamic Health Score calculation
+  // A perfect score is 100. Each % of savings potential drops the score, but we weight it.
+  const savingsRatio = report.totalSpend > 0 ? (report.totalSavings / report.totalSpend) : 0;
+  const dynamicScore = Math.max(0, Math.min(100, Math.round(100 - (savingsRatio * 150))));
+  const healthScore = hasSavings ? dynamicScore : 100;
 
   return (
-    <div className="py-12 md:py-20 px-4 max-w-5xl mx-auto space-y-10">
+    <div className="py-12 md:py-20 px-4 max-w-5xl mx-auto space-y-10 print:py-0 print:px-0 print:max-w-none">
       
       {/* Header */}
-      <div className="flex flex-col space-y-6 md:space-y-0 md:flex-row md:items-start justify-between print:mb-8">
+      <div className="flex flex-col space-y-6 md:space-y-0 md:flex-row md:items-start justify-between print:mb-8 print:flex-row print:items-center">
         <div>
           <Link to="/audit" className="text-sm text-indigo-600 font-medium flex items-center hover:underline mb-4 transition-colors print:hidden">
             <ArrowLeft className="w-4 h-4 mr-1" /> Back to Form
           </Link>
           <div className="flex items-center gap-3 mb-2">
-            <h1 className="text-4xl font-extrabold tracking-tight text-slate-900">Your AI Audit Report</h1>
+            <h1 className="text-4xl font-extrabold tracking-tight text-slate-900 print:text-2xl">Your AI Audit Report</h1>
             <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800 print:bg-white print:border print:border-emerald-200">
               <ShieldCheck className="w-3 h-3 mr-1" /> Verified
             </span>
           </div>
-          <p className="text-lg text-slate-600 max-w-2xl">
+          <p className="text-lg text-slate-600 max-w-2xl print:text-sm">
             Based on your stack, here is our financial analysis and recommendations. Pricing estimates are up to date as of May 2026.
           </p>
         </div>
@@ -125,11 +142,11 @@ export default function AuditReportPage() {
       </div>
 
       {/* KPI Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <Card className="border-slate-200 shadow-sm bg-white">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 print:grid-cols-4 print:gap-4">
+        <Card className="border-slate-200 shadow-sm bg-white print:shadow-none">
           <CardHeader className="pb-2">
             <CardDescription className="font-medium">Monthly Spend</CardDescription>
-            <CardTitle className="text-3xl font-bold flex items-center">
+            <CardTitle className="text-3xl font-bold flex items-center print:text-xl">
               <DollarSign className="w-6 h-6 text-slate-400 mr-1" />
               {report.totalSpend.toLocaleString()}
             </CardTitle>
@@ -139,12 +156,12 @@ export default function AuditReportPage() {
           </CardContent>
         </Card>
 
-        <Card className={`border-slate-200 shadow-sm ${hasSavings ? "bg-amber-50/50 border-amber-100" : "bg-emerald-50/50 border-emerald-100"}`}>
+        <Card className={`border-slate-200 shadow-sm ${hasSavings ? "bg-amber-50/50 border-amber-100" : "bg-emerald-50/50 border-emerald-100"} print:shadow-none print:bg-white`}>
           <CardHeader className="pb-2">
             <CardDescription className={`font-medium ${hasSavings ? "text-amber-700" : "text-emerald-700"}`}>
               Monthly Savings
             </CardDescription>
-            <CardTitle className={`text-3xl font-bold flex items-center ${hasSavings ? "text-amber-600" : "text-emerald-600"}`}>
+            <CardTitle className={`text-3xl font-bold flex items-center ${hasSavings ? "text-amber-600" : "text-emerald-600"} print:text-xl`}>
               <DollarSign className={`w-6 h-6 mr-1 ${hasSavings ? "text-amber-500" : "text-emerald-500"}`} />
               {report.totalSavings.toLocaleString()}
             </CardTitle>
@@ -156,10 +173,10 @@ export default function AuditReportPage() {
           </CardContent>
         </Card>
 
-        <Card className="border-slate-200 shadow-sm bg-white">
+        <Card className="border-slate-200 shadow-sm bg-white print:shadow-none">
           <CardHeader className="pb-2">
             <CardDescription className="font-medium">Annual Savings</CardDescription>
-            <CardTitle className="text-3xl font-bold flex items-center text-indigo-600">
+            <CardTitle className="text-3xl font-bold flex items-center text-indigo-600 print:text-xl">
               <TrendingDown className="w-6 h-6 mr-2 text-indigo-500" />
               ${report.annualSavings.toLocaleString()}
             </CardTitle>
@@ -169,17 +186,18 @@ export default function AuditReportPage() {
           </CardContent>
         </Card>
 
-        <Card className="border-slate-200 shadow-sm bg-slate-900 text-white">
+        <Card className="border-slate-200 shadow-sm bg-slate-900 text-white print:bg-white print:text-slate-900 print:shadow-none print:border-slate-200">
           <CardHeader className="pb-2">
-            <CardDescription className="font-medium text-slate-400">Health Score</CardDescription>
-            <CardTitle className="text-3xl font-bold">
-              {hasSavings ? "74%" : "100%"}
+            <CardDescription className="font-medium text-slate-400 print:text-slate-500">Health Score</CardDescription>
+            <CardTitle className="text-3xl font-bold print:text-xl">
+              {healthScore}%
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="w-full bg-slate-800 rounded-full h-1.5 mt-1">
+            <div className="w-full bg-slate-800 rounded-full h-1.5 mt-1 print:bg-slate-100">
               <div 
-                className={`h-1.5 rounded-full ${hasSavings ? "bg-amber-500 w-[74%]" : "bg-emerald-500 w-full"}`}
+                className={`h-1.5 rounded-full ${healthScore > 80 ? "bg-emerald-500" : healthScore > 50 ? "bg-amber-500" : "bg-red-500"}`}
+                style={{ width: `${healthScore}%` }}
               ></div>
             </div>
           </CardContent>

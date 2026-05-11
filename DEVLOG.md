@@ -131,3 +131,36 @@
 - Refine edge cases and audit recommendation handling.
 - Improve README presentation with screenshots and project details.
 - Begin preparing the project for deployment and final submission polish.
+
+## Day 5 — 2026-05-11
+
+**Hours worked:** 4
+
+**What I did:**
+- Performed a major UI/UX polish pass across the entire application to improve overall consistency and product feel.
+- Enhanced the audit loading experience with sequenced “AI analysis” states to improve perceived responsiveness and startup realism.
+- Refined the dynamic Health Score calculation so it reflects actual optimization opportunities instead of static values.
+- Added print-friendly styling to the `AuditReportPage` to support lightweight PDF/export workflows without introducing external libraries or backend complexity.
+- Improved mobile responsiveness across the landing page, audit form, and report views.
+- Refined recommendation card layouts, spacing, and hierarchy to improve readability on smaller screens.
+- Improved the “Report Not Found” and empty-state flows with clearer messaging and navigation actions.
+- Added safer input parsing and sanitization inside the audit engine to better handle edge cases and invalid numeric values.
+- Updated project documentation (`README.md`, `ARCHITECTURE.md`, and `DEVLOG.md`) to reflect the current MVP architecture and development approach.
+- Cleaned up navigation flows, footer links, and overall UI consistency to create a more polished SaaS-style experience.
+
+**What I learned:**
+- Product polish and UX consistency significantly improve how users perceive technical quality.
+- Small interaction improvements like staged loading states can make frontend-only systems feel much more believable.
+- Mobile responsiveness requires preserving hierarchy and readability, not just shrinking layouts.
+- Lightweight solutions (like print styles and localStorage persistence) can achieve strong MVP realism without introducing unnecessary infrastructure complexity.
+- Clear documentation and thoughtful architecture explanations help communicate engineering decisions much more effectively.
+
+**Blockers / what I'm stuck on:**
+- No major blockers currently. The MVP is now in a stable and polished state, with remaining work focused mainly on deployment preparation, final cleanup, and testing.
+
+**Plan for tomorrow:**
+- Perform a complete walkthrough and bug-fixing pass across all routes and user flows.
+- Prepare screenshots and deployment assets for the final submission.
+- Finalize README presentation and project documentation.
+- Clean up unused imports/components and improve overall code consistency.
+- Deploy the final MVP build and prepare for assignment submission.

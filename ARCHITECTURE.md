@@ -68,23 +68,31 @@ Generate Public Audit URL
 
 ---
 
+## Architecture Philosophy: "Simulation First"
+
+To deliver a high-quality SaaS MVP without backend complexity, SpendPilot uses a **Simulation First** architecture:
+- **Rule-Based Engine**: Replaces expensive LLM calls with deterministic financial logic for instant, reliable recommendations.
+- **LocalStorage as DB**: Simulates a persistence layer, allowing reports to be saved, retrieved, and "shared" (locally).
+- **Dynamic Routing**: Uses URL parameters to create a professional application flow.
+
+---
+
 ## Current Structure
 
 ```bash
 src/
- ├── components/
- ├── layouts/
- ├── lib/
- ├── pages/
- └── assets/
+ ├── components/  # Atomic UI and complex form components
+ ├── layouts/     # Shared page wrappers (Navbar/Footer)
+ ├── lib/         # Business logic (Audit Engine, Pricing data)
+ ├── pages/       # Route-level view components
+ └── ui/          # shadcn/ui primitives
 ```
 
 ---
 
-## Future Improvements
+## Future Roadmap (Production Ready)
 
-- Dynamic audit engine
-- AI-generated recommendations
-- Shareable reports
-- Automated pricing optimization
-- Unit testing for audit logic
+- **Supabase Migration**: Replace LocalStorage with a real-time database.
+- **OAuth Integration**: Connect directly to Stripe/Quickbooks for automated audits.
+- **Real LLM Integration**: Use Anthropic/OpenAI for behavioral analysis of usage logs.
+- **Team Dashboards**: Multi-user workspaces and organizational hierarchies.

@@ -1,88 +1,61 @@
-# SpendPilot
+# 🚀 SpendPilot: AI Spend Audit SaaS MVP
 
-SpendPilot is an AI Spend Audit platform that helps startups and teams identify unnecessary spending across AI tools like ChatGPT, Claude, Cursor, GitHub Copilot, and more.
+**SpendPilot** is a production-grade, startup-style AI Spend Audit platform built as part of the Credex Web Development Internship assignment. It helps organizations identify unutilized AI licenses, consolidate overlapping tools, and optimize their total AI spend in minutes.
 
-Users can audit their AI stack, receive optimization recommendations, estimate monthly and annual savings, and generate shareable audit reports.
+![SpendPilot Banner](https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1200&h=400)
 
----
+## 🌟 Key Features
 
-## Features
+- **Dynamic AI Audit Engine**: A sophisticated rule-based simulation that identifies savings across ChatGPT, Claude, Cursor, and more.
+- **Persistent Reports**: Shareable report links powered by `localStorage` persistence and dynamic routing.
+- **Interactive Stack Form**: Multi-tool input handling with real-time Zod validation and `react-hook-form`.
+- **Financial Insights**: KPI dashboards showing Monthly Spend, Savings Gap, Annual Projections, and a calculated Health Score.
+- **Export Capabilities**: Professional CSV export for financial stakeholders.
+- **Mobile-First Design**: Fully responsive UI built with Tailwind CSS and shadcn/ui.
+- **Print Optimization**: Report pages optimized for PDF "Save as Print" functionality.
 
-- AI tool spending audit
-- Monthly + annual savings estimation
-- Personalized AI-generated summaries
-- Shareable public audit reports
-- Lead capture for high-savings opportunities
-- Responsive startup-style UI
+## 🛠️ Technical Stack
 
----
+- **Frontend**: React 18 + Vite
+- **Styling**: Tailwind CSS + shadcn/ui (Radix UI)
+- **Routing**: React Router DOM v6
+- **Form Handling**: React Hook Form + Zod Validation
+- **Icons**: Lucide React
+- **State Management**: Local Storage Persistence (Demo-ready)
 
-## Tech Stack
+## 🏗️ Architecture Decisions
 
-Frontend:
-- React + Vite
-- JavaScript
-- Tailwind CSS
-- shadcn/ui
-- React Router
+### 1. The "Simulation First" Approach
+To satisfy the requirements of a high-polish MVP within 7 days, I implemented a robust **Frontend Audit Engine**. Instead of waiting for real AI API calls, the engine uses benchmarked pricing data to provide instant, realistic financial recommendations. This ensures 100% uptime for recruiters and a snappy UX.
 
-Backend (planned):
-- Supabase
+### 2. State Persistence
+The application uses a hybrid approach to state:
+- **`localStorage`**: Persists the user's form data and generated reports, allowing for a "resume-where-you-left-off" experience without a backend.
+- **Dynamic Routing**: Uses URL parameters (`/report/:id`) to simulate deep-linking, making the reports feel like real SaaS assets.
 
-Deployment:
-- Vercel
+### 3. Component-Driven UI
+Built using **shadcn/ui**, the codebase follows a clean, atomic structure. Components are modular, reusable, and styled using a unified design system of Indigo/Slate/Emerald.
 
-AI:
-- OpenAI API / Anthropic API
+## 🚀 Getting Started
 
----
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/Anish9686/SpendPilot.git
+   ```
+2. **Install dependencies**:
+   ```bash
+   npm install
+   ```
+3. **Run development server**:
+   ```bash
+   npm run dev
+   ```
 
-## Current Progress
-
-### Completed
-- Project setup
-- Tailwind configuration
-- shadcn/ui setup
-- Responsive landing page
-- Basic folder architecture
-- Dynamic AI Audit Form (React Hook Form + Zod)
-- LocalStorage state persistence
-- Form array logic for multiple AI tools
-- React Router integration for `/audit` page
-
-### In Progress
-- Dynamic audit engine
-- Savings recommendation logic
-- AI summary generation
-- Supabase integration
-
----
-
-## Project Structure
-
-```bash
-src/
- ├── components/
- ├── layouts/
- ├── lib/
- ├── pages/
- └── assets/
-```
+## 📈 Roadmap (Next Steps)
+- [ ] **Supabase Integration**: Moving from `localStorage` to a real DB for global report sharing.
+- [ ] **Google Workspace OAuth**: Automating the audit by scanning company invoices.
+- [ ] **Real LLM Analysis**: Integrating OpenAI/Anthropic APIs for deeper behavioral spend analysis.
 
 ---
 
-## Design Goals
-
-- Clean SaaS-style UI
-- Startup-focused product experience
-- Minimal and modern interface
-- Mobile responsive
-- Fast-loading MVP architecture
-
----
-
-## Deployment
-
-Deployment will be done using Vercel.
-
----
+**Built with ❤️ for the Credex Internship Assignment.**

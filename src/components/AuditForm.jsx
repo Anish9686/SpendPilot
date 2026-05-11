@@ -48,9 +48,24 @@ export default function AuditForm() {
     localStorage.setItem("spendpilot_audit_form", JSON.stringify(formValues));
   }, [formValues]);
 
+  const [loadingStep, setLoadingStep] = useState(0);
+  const loadingMessages = [
+    "Analyzing your stack...",
+    "Benchmarking prices...",
+    "Identifying overlaps...",
+    "Calculating potential savings...",
+    "Generating report..."
+  ];
+
   const onSubmit = (data) => {
     setIsAnalyzing(true);
+    setLoadingStep(0);
     
+    // Sequence through loading messages
+    const interval = setInterval(() => {
+      setLoadingStep(prev => (prev < loadingMessages.length - 1 ? prev + 1 : prev));
+    }, 600);
+
     // Generate report
     const reportId = Math.random().toString(36).substring(2, 10);
     const reportData = runAuditEngine(data);
@@ -69,8 +84,9 @@ export default function AuditForm() {
     localStorage.setItem("spendpilot_latest_report", reportId);
 
     setTimeout(() => {
+      clearInterval(interval);
       navigate(`/report/${reportId}`);
-    }, 1500);
+    }, 3000);
   };
 
   return (
@@ -228,11 +244,11 @@ export default function AuditForm() {
           </div>
 
           <div className="pt-6 border-t border-neutral-100 dark:border-neutral-800">
-            <Button type="submit" size="lg" className="w-full md:w-auto font-medium" disabled={isAnalyzing}>
+            <Button type="submit" size="lg" className="w-full md:w-auto font-medium min-w-[200px]" disabled={isAnalyzing}>
               {isAnalyzing ? (
                 <>
                   <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  Analyzing Stack...
+                  {loadingMessages[loadingStep]}
                 </>
               ) : (
                 <>
