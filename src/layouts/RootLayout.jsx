@@ -18,7 +18,7 @@ export default function RootLayout() {
           <nav className="hidden md:flex items-center space-x-8 text-sm font-medium text-slate-600">
             <Link to="/" className="hover:text-indigo-600 transition-colors">Platform</Link>
             <Link to="/audit" className="hover:text-indigo-600 transition-colors">Pricing Audit</Link>
-            <a href="https://github.com/Anish9686/SpendPilot" target="_blank" rel="noreferrer" className="hover:text-indigo-600 transition-colors">Docs</a>
+            <Link to="/docs" className="hover:text-indigo-600 transition-colors">Docs</Link>
           </nav>
 
           <div className="flex items-center space-x-3 md:space-x-4">

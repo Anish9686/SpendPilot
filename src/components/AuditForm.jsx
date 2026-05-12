@@ -4,6 +4,7 @@ import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Plus, Trash2, ArrowRight, Loader2 } from "lucide-react";
 import { runAuditEngine } from "@/lib/auditEngine";
+import { supabase } from "@/lib/supabase";
 
 import { auditSchema, defaultFormValues, defaultToolValues, AI_TOOLS, USE_CASES } from "@/lib/schema";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -57,7 +58,7 @@ export default function AuditForm() {
     "Generating report..."
   ];
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     setIsAnalyzing(true);
     setLoadingStep(0);
     
@@ -70,17 +71,27 @@ export default function AuditForm() {
     const reportId = Math.random().toString(36).substring(2, 10);
     const reportData = runAuditEngine(data);
     
-    // Add metadata for trust building
+    // Add metadata
     reportData.generatedAt = new Date().toISOString();
     reportData.id = reportId;
 
-    // Save to localStorage
+    // 1. Save to Supabase (Persistence Layer)
+    try {
+      const { error } = await supabase
+        .from('reports')
+        .insert([{ id: reportId, report_data: reportData }]);
+      
+      if (error) throw error;
+    } catch (err) {
+      console.error("Supabase Save Error:", err.message);
+      // Fallback: We still proceed so the app works locally even if DB fails
+    }
+
+    // 2. Save to localStorage (Fallback/Local Cache)
     const savedReportsStr = localStorage.getItem("spendpilot_reports");
     const savedReports = savedReportsStr ? JSON.parse(savedReportsStr) : {};
     savedReports[reportId] = reportData;
     localStorage.setItem("spendpilot_reports", JSON.stringify(savedReports));
-    
-    // Also save latest report ID to easily find it without a specific link
     localStorage.setItem("spendpilot_latest_report", reportId);
 
     setTimeout(() => {

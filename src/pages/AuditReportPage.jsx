@@ -1,40 +1,81 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { ArrowLeft, TrendingDown, DollarSign, AlertCircle, CheckCircle2, Share2, FileX, ShieldCheck, Download } from "lucide-react";
+import { ArrowLeft, TrendingDown, DollarSign, CheckCircle2, Share2, FileX, ShieldCheck, Download, Loader2 } from "lucide-react";
+import { supabase } from "@/lib/supabase";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
 export default function AuditReportPage() {
   const { reportId } = useParams();
   const [report, setReport] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [isLocal, setIsLocal] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [animatedScore, setAnimatedScore] = useState(0);
 
   useEffect(() => {
-    // 1. Read data from localStorage
-    const savedReportsStr = localStorage.getItem("spendpilot_reports");
-    if (savedReportsStr) {
+    async function loadReport() {
+      setLoading(true);
+      
+      // 1. Try fetching from Supabase first (Truth)
+      if (reportId) {
+        try {
+          const { data, error } = await supabase
+            .from('reports')
+            .select('report_data')
+            .eq('id', reportId)
+            .single();
+
+          if (data && !error) {
+            setReport(data.report_data);
+            setIsLocal(false);
+            setLoading(false);
+            return;
+          }
+          if (error) throw error;
+        } catch (err) {
+          console.warn("Supabase fetch failed, trying localStorage...", err.message);
+        }
+      }
+
+      // 2. Fallback to localStorage (Offline/Cache)
+      const savedReportsStr = localStorage.getItem("spendpilot_reports");
+      if (savedReportsStr) {
+        try {
+          const savedReports = JSON.parse(savedReportsStr);
+          let activeId = reportId || localStorage.getItem("spendpilot_latest_report");
+          
+          if (activeId && savedReports[activeId]) {
+            setReport(savedReports[activeId]);
+            setIsLocal(true); // Indicate this is a local fallback
+          }
+        } catch (err) {
+          console.error("Local storage parse error:", err);
+        }
+      }
+      setLoading(false);
+    }
+
+    loadReport();
+  }, [reportId]);
+
+  const handleShare = async () => {
+    const shareData = {
+      title: 'SpendPilot AI Audit Report',
+      text: `We found $${report?.annualSavings.toLocaleString()} in potential AI savings! Check out my SpendPilot report.`,
+      url: window.location.href,
+    };
+
+    if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
       try {
-        const savedReports = JSON.parse(savedReportsStr);
-        let activeReportId = reportId;
-        
-        if (!activeReportId) {
-          activeReportId = localStorage.getItem("spendpilot_latest_report");
-        }
-        
-        if (activeReportId && savedReports[activeReportId]) {
-          setReport(savedReports[activeReportId]);
-        } else {
-          // Explicitly set to null if no valid report found
-          setReport(null);
-        }
+        await navigator.share(shareData);
       } catch (err) {
-        console.error("Failed to parse audit data", err);
-        setReport(null);
+        if (err.name !== 'AbortError') handleCopyLink();
       }
     } else {
-      setReport(null);
+      handleCopyLink();
     }
-  }, [reportId]);
+  };
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(window.location.href);
@@ -65,35 +106,52 @@ export default function AuditReportPage() {
     document.body.removeChild(link);
   };
 
+  const hasSavings = report?.totalSavings > 0;
+  const savingsRatio = (report?.totalSpend > 0) ? (report.totalSavings / report.totalSpend) : 0;
+  const dynamicScore = Math.max(0, Math.min(100, Math.round(100 - (savingsRatio * 150))));
+  const healthScore = (report?.totalSavings > 0) ? dynamicScore : 100;
+
+  useEffect(() => {
+    // Animate score on mount
+    if (report) {
+      const timer = setTimeout(() => {
+        setAnimatedScore(healthScore);
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [healthScore, report]);
+
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[70vh] space-y-4">
+        <Loader2 className="w-10 h-10 text-indigo-600 animate-spin" />
+        <p className="text-slate-500 font-medium">Fetching report from database...</p>
+      </div>
+    );
+  }
+
   if (!report) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[70vh] px-4 text-center">
-        <div className="w-24 h-24 bg-slate-100 rounded-full flex items-center justify-center mb-8 animate-pulse">
-          <FileX className="w-12 h-12 text-slate-400" />
+      <div className="flex flex-col items-center justify-center min-h-[75vh] px-4 text-center">
+        <div className="w-24 h-24 bg-slate-50 rounded-full flex items-center justify-center mb-8 border border-slate-100">
+          <FileX className="w-12 h-12 text-slate-300" />
         </div>
-        <h2 className="text-3xl font-extrabold tracking-tight text-slate-900 mb-4">Audit Report Not Found</h2>
-        <p className="text-lg text-slate-600 mb-10 max-w-md mx-auto leading-relaxed">
-          The audit link you followed may have expired, or the data was cleared from your browser's local storage.
+        <h2 className="text-3xl font-bold text-slate-900 mb-4">Report Not Found</h2>
+        <p className="text-lg text-slate-500 mb-10 max-w-md mx-auto leading-relaxed">
+          The link you followed might be incorrect, or the report data was cleared from this device.
+          {reportId && <span className="block mt-2 font-mono text-xs text-slate-400">ID: {reportId}</span>}
         </p>
-        <div className="flex flex-col sm:flex-row gap-4">
-          <Button asChild size="lg" className="rounded-full px-8 bg-indigo-600 hover:bg-indigo-700 shadow-lg shadow-indigo-200">
+        <div className="flex flex-col sm:flex-row gap-3">
+          <Button asChild size="lg" className="rounded-full px-8 bg-indigo-600 hover:bg-indigo-700">
             <Link to="/audit">Run New Audit</Link>
           </Button>
-          <Button asChild variant="outline" size="lg" className="rounded-full px-8">
-            <Link to="/">Back to Home</Link>
+          <Button asChild variant="ghost" size="lg" className="rounded-full px-8 text-slate-500 hover:text-slate-900">
+            <Link to="/">Return Home</Link>
           </Button>
         </div>
       </div>
     );
   }
-
-  const hasSavings = report.totalSavings > 0;
-  
-  // Dynamic Health Score calculation
-  // A perfect score is 100. Each % of savings potential drops the score, but we weight it.
-  const savingsRatio = report.totalSpend > 0 ? (report.totalSavings / report.totalSpend) : 0;
-  const dynamicScore = Math.max(0, Math.min(100, Math.round(100 - (savingsRatio * 150))));
-  const healthScore = hasSavings ? dynamicScore : 100;
 
   return (
     <div className="py-12 md:py-20 px-4 max-w-5xl mx-auto space-y-10 print:py-0 print:px-0 print:max-w-none">
@@ -105,10 +163,17 @@ export default function AuditReportPage() {
             <ArrowLeft className="w-4 h-4 mr-1" /> Back to Form
           </Link>
           <div className="flex items-center gap-3 mb-2">
-            <h1 className="text-4xl font-extrabold tracking-tight text-slate-900 print:text-2xl">Your AI Audit Report</h1>
-            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800 print:bg-white print:border print:border-emerald-200">
-              <ShieldCheck className="w-3 h-3 mr-1" /> Verified
-            </span>
+            <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-slate-900">Audit Results</h2>
+            {isLocal && (
+              <div className="inline-flex items-center rounded-full bg-amber-50 px-2 py-1 text-xs font-medium text-amber-700 ring-1 ring-inset ring-amber-600/20">
+                Local Version
+              </div>
+            )}
+            {!isLocal && (
+              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800 print:bg-white print:border print:border-emerald-200">
+                <ShieldCheck className="w-3 h-3 mr-1" /> Verified
+              </span>
+            )}
           </div>
           <p className="text-lg text-slate-600 max-w-2xl print:text-sm">
             Based on your stack, here is our financial analysis and recommendations. Pricing estimates are up to date as of May 2026.
@@ -129,12 +194,12 @@ export default function AuditReportPage() {
               variant="outline" 
               size="sm"
               className="flex items-center gap-2 rounded-full border-slate-200"
-              onClick={handleCopyLink}
+              onClick={handleShare}
             >
               {copied ? (
                 <><CheckCircle2 className="w-4 h-4 text-emerald-500" /> Copied!</>
               ) : (
-                <><Share2 className="w-4 h-4 text-slate-500" /> Share</>
+                <><Share2 className="w-4 h-4 text-slate-500" /> Share Report</>
               )}
             </Button>
           </div>
@@ -190,14 +255,14 @@ export default function AuditReportPage() {
           <CardHeader className="pb-2">
             <CardDescription className="font-medium text-slate-400 print:text-slate-500">Health Score</CardDescription>
             <CardTitle className="text-3xl font-bold print:text-xl">
-              {healthScore}%
+              {animatedScore}%
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="w-full bg-slate-800 rounded-full h-1.5 mt-1 print:bg-slate-100">
               <div 
-                className={`h-1.5 rounded-full ${healthScore > 80 ? "bg-emerald-500" : healthScore > 50 ? "bg-amber-500" : "bg-red-500"}`}
-                style={{ width: `${healthScore}%` }}
+                className={`h-1.5 rounded-full transition-all duration-1000 ease-out ${animatedScore > 80 ? "bg-emerald-500" : animatedScore > 50 ? "bg-amber-500" : "bg-red-500"}`}
+                style={{ width: `${animatedScore}%` }}
               ></div>
             </div>
           </CardContent>

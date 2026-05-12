@@ -164,3 +164,47 @@
 - Finalize README presentation and project documentation.
 - Clean up unused imports/components and improve overall code consistency.
 - Deploy the final MVP build and prepare for assignment submission.
+
+## Day 6 — 2026-05-12
+
+**Hours worked:** 4
+
+**What I did:**
+- Integrated Supabase as the primary persistence layer for storing and retrieving audit reports.
+- Created a lightweight `reports` table structure to support shareable report URLs without introducing unnecessary backend complexity.
+- Configured environment variables and connected the frontend to Supabase using the official `@supabase/supabase-js` client.
+- Updated the audit flow so completed reports are saved to Supabase before redirecting users to dynamic `/report/:id` routes.
+- Added fallback persistence using `localStorage` to improve resilience during refreshes or temporary connectivity issues.
+- Improved error handling for missing reports and invalid report routes with cleaner empty-state messaging and navigation actions.
+- Configured Vercel deployment settings and added SPA rewrite handling to support React Router refresh behavior in production.
+- Performed production validation using:
+  - `npm run build`
+  - `npm run lint`
+- Cleaned up unused imports, minor UI inconsistencies, and navigation edge cases across the application.
+- Finalized the `README.md` with:
+  - architecture explanations
+  - setup instructions
+  - screenshots section
+  - deployment guidance
+  - MVP philosophy
+- Deployed the final MVP build to Vercel and tested the production workflow end-to-end.
+
+**What I learned:**
+- Lightweight backend integration can significantly improve product realism without requiring enterprise-level infrastructure.
+- Combining Supabase persistence with frontend-first architecture creates a strong balance between MVP simplicity and SaaS credibility.
+- Deployment preparation and production testing are just as important as feature development for delivering a polished engineering project.
+- Stable UX, clean routing behavior, and resilient fallback handling improve perceived product quality significantly.
+
+**Blockers / what I'm stuck on:**
+- No major blockers currently. The application is now deployed and functioning as a complete MVP submission.
+
+**Final Outcome:**
+- Successfully completed and deployed a polished startup-style AI Spend Audit MVP within the planned execution timeline.
+- The final project now includes:
+  - realistic audit workflows
+  - Supabase persistence
+  - shareable reports
+  - responsive SaaS UI
+  - production deployment
+  - recruiter-focused documentation
+  - stable frontend architecture

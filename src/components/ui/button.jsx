@@ -44,14 +44,19 @@ function Button({
   className,
   variant = "default",
   size = "default",
+  asChild = false,
   ...props
 }) {
+  const Comp = asChild ? "span" : ButtonPrimitive; // Simple fallback to avoid nested buttons
+  
   return (
-    <ButtonPrimitive
+    <Comp
       data-slot="button"
       className={cn(buttonVariants({ variant, size, className }))}
-      {...props} />
+      {...props} 
+    />
   );
 }
 
+/* eslint-disable react-refresh/only-export-components */
 export { Button, buttonVariants }
