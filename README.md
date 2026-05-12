@@ -238,7 +238,7 @@ The repository also includes:
 # 🌐 Live Demo
 
 ```bash
-Add deployed Vercel link here
+https://spend-pilot-eight.vercel.app
 ```
 
 ---
